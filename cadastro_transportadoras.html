@@ -1,1 +1,53 @@
-/opt/lampp/htdocs/cadastro_transportadoras.html
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Cadastro de Transportadoras</title>
+	<script type="text/javascript">
+		var input_nome;
+		var input_situacao = []; //precisa ser um array pois sao dois elementos distintos
+		var bt_cadastrar;
+		var formulario;
+
+		//limpa campos qdo pagina eh atualizada
+		window.onbeforeunload = function(){
+			input_nome.value = '';
+			input_situacao[0].checked = false;
+			input_situacao[1].checked = false;
+		};
+	</script>
+</head>
+<body>
+<h1>Cadastro de Transportadoras</h1>
+<br><br>
+<div id="div_form">
+	<form method="post" action="insert_transportadora.php" id="formulario">
+		<fieldset>
+			Nome da transportadora: <input type="text" name="nome_transportadora" id="input_nome" required></input><br><br>
+			Situação da transportadora: <input type="radio" name="situacao_transportadora" id="input_sit_ativa" value="1" required>Ativa</input>
+			<input type="radio" name="situacao_transportadora" id="input_sit_inativa" value="0" required>Inativa</input>
+			<br><br>			
+		</fieldset>
+	</form>
+</div>
+<br><br>
+<button type="button" id="bt_cadastrar">Cadastrar</button>
+<script type="text/javascript">
+	formulario = document.getElementById('formulario');
+	input_nome = formulario.elements[1];
+	input_situacao[0] = formulario.elements[2];
+	input_situacao[1] = formulario.elements[3];
+	bt_cadastrar = document.getElementById('bt_cadastrar');		
+
+	//valida inputs
+	bt_cadastrar.addEventListener('click',function(){
+			if(input_nome.value === '' || (!input_situacao[0].checked && !input_situacao[1].checked)){
+				alert("Preencha os campos obrigatórios!");
+				return;
+			}
+			formulario.submit();
+		}			
+	);
+</script>
+</body>
+</html>
