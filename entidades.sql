@@ -9,8 +9,8 @@ CREATE TABLE transportadora(
 DROP TABLE IF EXISTS faixa_entrega;
 CREATE TABLE faixa_entrega(
 	id_faixa_entrega MEDIUMINT AUTO_INCREMENT NOT NULL,
-	cep_inicial CHAR(9) NOT NULL,
-	cep_final CHAR(9) NOT NULL,
+	cep_inicial CHAR(8) NOT NULL,
+	cep_final CHAR(8) NOT NULL,
 	peso_minimo FLOAT NOT NULL, 
 	peso_maximo FLOAT NOT NULL,
 	preco FLOAT NOT NULL,
@@ -39,9 +39,9 @@ DELIMITER ;
 DELIMITER ;;
 CREATE TRIGGER integridade_faixa_entrega BEFORE INSERT ON faixa_entrega
 FOR EACH ROW
-IF NOT (NEW.peso_minimo > 0 OR NEW.peso_maximo > 0) THEN
+IF NOT (NEW.peso_minimo > 0 AND NEW.peso_maximo > 0) THEN
 	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Dados invalidos, pesos com valores iguais ou menores que 0';
-ELSEIF NOT (LENGTH(NEW.cep_inicial) = 9 OR LENGTH(NEW.cep_final) = 9) THEN
+ELSEIF NOT (LENGTH(NEW.cep_inicial) = 8 AND LENGTH(NEW.cep_final) = 8) THEN
 	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Dados invalidos, CEP com numero de algarismos incorreto';
 ELSEIF NOT (NEW.preco > 0) THEN
 	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Dados invalidos, preco incorreto';
