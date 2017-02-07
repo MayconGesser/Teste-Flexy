@@ -1,9 +1,10 @@
 <?php
-header("Content-Type: application/json");
+// header("Content-Type: application/json");
 require 'conexao.php';
 
 define('TAB_TRANSPORTADORA','transportadora');
-
+$c = new Conexao;
+$conexao = $c->getConexao();
 $sql = "SELECT * FROM " . TAB_TRANSPORTADORA . " ORDER BY id_transportadora";
 $resultado = $conexao->query($sql);
 if($resultado){
@@ -18,7 +19,7 @@ if($resultado){
 			$i = $i + 1;
 		}
 		$retorno .= ']';
-		echo json_encode($retorno);
+		echo $retorno;
 	} else{
 		echo 'Nenhum resultado';
 	}

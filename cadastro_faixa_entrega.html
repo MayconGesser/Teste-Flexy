@@ -14,18 +14,31 @@
 		var bt_cadastrar;
 
 		$(document).ready(function(){
-			$.get('transportadoraPDO.php',function(data){
-				var combo_transportadoras = document.getElementById('combo_transportadoras');
-				console.log(data);
-				var json_retorno = JSON.parse(data);
-				for(var i = 0; i<json_retorno.length; i++){
-					var opcao = document.createElement('option');
-					var string = json_retorno[i].id_transportadora + ' - ' + json_retorno[i].nome;
-					opcao.value = json_retorno[i].id_transportadora;
-					opcao.innerHTML = string;
-					combo_transportadoras.appendChild(opcao);
+			var data = {'function' : 'select'};
+			var url = 'index_transportadora.php';
+			console.log('fazendo ajax');
+			$.ajax({				
+				type : "GET",
+				url : url,
+				data : data,
+				success : function(result){
+					var combo_transportadoras = document.getElementById('combo_transportadoras');
+					console.log('imprimindo resultado');
+					console.log(result);
+					var json_retorno = JSON.parse(result);
+					for(var i = 0; i<json_retorno.length; i++){
+						var opcao = document.createElement('option');
+						var string = json_retorno[i].id_transportadora + ' - ' + json_retorno[i].nome;
+						opcao.value = json_retorno[i].id_transportadora;
+						opcao.innerHTML = string;
+						combo_transportadoras.appendChild(opcao);
+					}
+				},
+				error : function(xhr,error){
+					console.log('falhou: ' + error);
 				}
 			});
+				
 		});
 
 		window.onbeforeunload = function(){

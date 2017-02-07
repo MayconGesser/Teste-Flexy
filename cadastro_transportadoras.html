@@ -3,18 +3,21 @@
 <head>
 	<meta charset="utf-8">
 	<title>Cadastro de Transportadoras</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script type="text/javascript">
 		var input_nome;
 		var input_situacao = []; //precisa ser um array pois sao dois elementos distintos
 		var bt_cadastrar;
 		var formulario;
 
-		//limpa campos qdo pagina eh atualizada
-		window.onbeforeunload = function(){
+		function limpaCampos(){
 			input_nome.value = '';
 			input_situacao[0].checked = false;
 			input_situacao[1].checked = false;
-		};
+		}
+
+		//limpa campos qdo pagina eh atualizada
+		window.onbeforeunload = limpaCampos;
 	</script>
 </head>
 <body>
@@ -45,7 +48,24 @@
 				alert("Preencha os campos obrigatórios!");
 				return;
 			}
-			formulario.submit();
+			var url = 'index_transportadora.php';
+			var data = {
+				'function' : 'insert',
+				'nome_transportadora' : input_nome.value,
+				'situacao_transportadora' : input_situacao.value	
+			};
+			$.ajax({
+				type: "POST",
+				url : url,
+				data : data,
+				success : function(){
+					alert('Transportadora cadastrada com sucesso.');
+					limpaCampos();
+				},
+				error : function(xhr,error){
+					alert(error);
+				}
+			});
 		}			
 	);
 </script>
