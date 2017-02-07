@@ -14,16 +14,10 @@ CREATE TABLE faixa_entrega(
 	peso_minimo FLOAT NOT NULL, 
 	peso_maximo FLOAT NOT NULL,
 	preco FLOAT NOT NULL,
-	PRIMARY KEY(id_faixa_entrega)
-) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS transportadora_faixa_entrega;
-CREATE TABLE transportadora_faixa_entrega(
 	id_transportadora MEDIUMINT NOT NULL,
-	id_faixa_entrega MEDIUMINT NOT NULL,
-	PRIMARY KEY(id_transportadora,id_faixa_entrega),
-	FOREIGN KEY(id_transportadora) REFERENCES transportadora(id_transportadora) ON DELETE RESTRICT,
-	FOREIGN KEY(id_faixa_entrega) REFERENCES faixa_entrega(id_faixa_entrega) ON DELETE RESTRICT
+	PRIMARY KEY(id_faixa_entrega),
+	UNIQUE (cep_inicial,cep_final,peso_minimo,peso_maximo,id_transportadora),
+	FOREIGN KEY (id_transportadora) REFERENCES transportadora (id_transportadora) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
 DELIMITER ;;

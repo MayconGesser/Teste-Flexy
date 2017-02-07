@@ -1,12 +1,16 @@
 <?php
+class Conexao{
+	private $HOST = 'localhost';
+	private $USER = 'root';
+	private $SENHA = '';
+	private $DB = 'teste_flexy';
 
-define('HOST','127.0.0.1');
-define('USER','root');
-define('SENHA','');
-define('DB','teste_flexy');
-
-$conexao = new mysqli(HOST,USER,SENHA,DB);
-if($conexao->connect_error){	
-	die("Conexão falhou.");
+	public function getConexao(){
+		$retorno = new mysqli($this->HOST,$this->USER,$this->SENHA,$this->DB);
+		if(!$retorno){
+			die("Conexão falhou: " . $retorno->connect_error);
+		}
+		return $retorno;
+	}
 }
 ?>
