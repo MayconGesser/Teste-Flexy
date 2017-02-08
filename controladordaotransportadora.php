@@ -33,6 +33,23 @@ class ControladorDAOTransportadora{
 			}
 	}
 
+	public function update_transportadora($id,$atributos,$valores_novos){
+		$sql_update = 'UPDATE transportadora SET ';
+		$i = 0; 
+		foreach($atributos as $nome_atributo){
+			//recupera o nome dos atributos
+			$sql_update .= $nome_atributo . ' = ' . "'" . $valores_novos[$nome_atributo] . "'" . ($i !== count($valores_novos)-1 ? ', ' : '');
+			$i++;
+		}		
+		$sql_update .= ' WHERE id_transportadora = ' . $id;
+		if(!$this->conexao->query($sql_update)){
+			echo 'Erro ao alterar registro: ' . $this->conexao->error;
+		}
+		else{
+			echo 'Alteração realizada com sucesso.';
+		}
+	}
+
 	public function listar_todas(){
 		$resultado = $this->conexao->query($this->sql_select);
 		if($resultado){
@@ -55,20 +72,6 @@ class ControladorDAOTransportadora{
 		}
 		else{
 			echo "Query falhou";
-		}
-	}
-
-	//retorna registro pelo id
-	public function get_registro($id){
-		$sql = "SELECT * FROM transportadora WHERE id_transportadora = $id";
-		$resultado = $this->conexao->query($this->sql_select);
-		if($resultado){
-			if($resultado->num_rows > 0){
-				$registro = $resultado->fetch_assoc()){
-				$retorno = '{ "nome" : ' . $registro['nome'] . ',' . 
-				'"ativa" : ' . $registro['ativa'] . '}';
-				echo $retorno;
-			}
 		}
 	}
 }

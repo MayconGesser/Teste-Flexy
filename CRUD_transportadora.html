@@ -16,11 +16,15 @@
 				success : function(result){
 						var json_resposta = JSON.parse(result);
 						for(var i = 0; i<json_resposta.length; i++){
+							var query_string = '?id_transportadora='+json_resposta[i].id_transportadora +
+							'&nome_transportadora='+json_resposta[i].nome+'&situacao_transportadora='+(json_resposta[i].ativa ? 'ativa' : 'inativa');
 							$('#tabela tbody').append(
 							"<tr>" + 
 							"<td>"+json_resposta[i].id_transportadora+"</td>" + 
 							"<td>"+json_resposta[i].nome+"</td>" + 
 							"<td>"+(json_resposta[i].ativa ? "Ativa" : "Inativa")+"</td>" +
+							"<td><span><a href=\"editar_transportadora.html"+query_string+"\">Editar</a></span></td>" + 
+							"<td><span><href>Excluir</a></span></td>" + 
 							"</tr>"				
 						);
 					}
@@ -30,11 +34,15 @@
 	</script>
 </head>
 <body>
+<h1>Listagem de Transportadoras</h1>
+<br><br>
 <table id="tabela">
 	<tr id="cabecalho">
 		<th>Id</th>
 		<th>Nome</th>
-		<th>Situação</th>	
+		<th>Situação</th>
+		<th></th>	
+		<th></th>
 	</tr>
 </table>
 </body>

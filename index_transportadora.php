@@ -21,5 +21,21 @@ else if(isset($_POST['function'])){
 		$args = array('nome' => $nome, 'ativa' => $ativa);
 		$controlador->insert_transportadora($args);
 	}
+	else if($_POST['function'] === 'update'){
+		$atributos = array();
+		$valores_novos = array();
+		$id = trim(strip_tags($_POST['id_transportadora']));
+		if(isset($_POST['nome'])){
+			$nome = ucwords(trim(strip_tags($_POST['nome'])));
+			array_push($atributos,'nome');
+			$valores_novos['nome'] = $nome;
+		}
+		if(isset($_POST['ativa'])){
+			$ativa = trim(strip_tags($_POST['ativa']));
+			array_push($atributos,'ativa');
+			$valores_novos['ativa'] = $ativa;
+		}
+		$controlador->update_transportadora($id,$atributos,$valores_novos);
+	}
 }
 ?>
