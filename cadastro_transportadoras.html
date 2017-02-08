@@ -52,14 +52,15 @@
 			var data = {
 				'function' : 'insert',
 				'nome_transportadora' : input_nome.value,
-				'situacao_transportadora' : input_situacao.value	
+				'situacao_transportadora' : 
+				(input_situacao[0].checked ? input_situacao[0].value : input_situacao[1].value)	
 			};
 			$.ajax({
 				type: "POST",
 				url : url,
 				data : data,
-				success : function(){
-					alert('Transportadora cadastrada com sucesso.');
+				success : function(result){
+					alert(result);
 					limpaCampos();
 				},
 				error : function(xhr,error){

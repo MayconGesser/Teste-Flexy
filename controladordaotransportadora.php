@@ -28,7 +28,7 @@ class ControladorDAOTransportadora{
 			}
 			else{
 					$insert->close();
-					echo "Insert executado com sucesso";
+					echo "Cadastro executado com sucesso";
 				}
 			}
 	}
@@ -41,7 +41,8 @@ class ControladorDAOTransportadora{
 				$retorno = '[';
 				$i = 1;
 				while($registro = $resultado->fetch_assoc()){
-					$json = '{' .  '"id_transportadora" : ' . $registro['id_transportadora'] . ',' . '"nome" : ' . '"' . $registro['nome'] . '"' . '}' . 
+					$json = '{' .  '"id_transportadora" : ' . $registro['id_transportadora'] . ',' . '"nome" : ' . '"' . $registro['nome'] . '"' . 
+					',' . '"ativa" : ' . $registro['ativa'] . '}' . 
 					($i !== $resultado->num_rows ? ',' : '');	//testa se eh a ultima posicao para por a virgula, para fins de boa construcao do JSON
 					$retorno .= $json;
 					$i = $i + 1;

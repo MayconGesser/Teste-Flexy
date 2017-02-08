@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<style src="estilo_tabelas.css"></style>
+	<script>
+		$(document).ready(function(){
+			var data = {'function' : 'select'};
+			var url = 'index_transportadora.php';
+			console.log('fazendo ajax');
+			$.ajax({				
+				type : "GET",
+				url : url,
+				data : data,
+				success : function(result){
+						var json_resposta = JSON.parse(result);
+						for(var i = 0; i<json_resposta.length; i++){
+							$('#tabela tbody').append(
+							"<tr>" + 
+							"<td>"+json_resposta[i].id_transportadora+"</td>" + 
+							"<td>"+json_resposta[i].nome+"</td>" + 
+							"<td>"+(json_resposta[i].ativa ? "Ativa" : "Inativa")+"</td>" +
+							"</tr>"				
+						);
+					}
+				}					
+			});
+		});
+	</script>
+</head>
+<body>
+<table id="tabela">
+	<tr id="cabecalho">
+		<th>Id</th>
+		<th>Nome</th>
+		<th>Situação</th>	
+	</tr>
+</table>
+</body>
+</html>
