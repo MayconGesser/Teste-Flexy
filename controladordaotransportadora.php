@@ -57,6 +57,20 @@ class ControladorDAOTransportadora{
 			echo "Query falhou";
 		}
 	}
+
+	//retorna registro pelo id
+	public function get_registro($id){
+		$sql = "SELECT * FROM transportadora WHERE id_transportadora = $id";
+		$resultado = $this->conexao->query($this->sql_select);
+		if($resultado){
+			if($resultado->num_rows > 0){
+				$registro = $resultado->fetch_assoc()){
+				$retorno = '{ "nome" : ' . $registro['nome'] . ',' . 
+				'"ativa" : ' . $registro['ativa'] . '}';
+				echo $retorno;
+			}
+		}
+	}
 }
 
 ?>

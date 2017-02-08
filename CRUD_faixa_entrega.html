@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>Listagem de Faixas de Entrega</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<style src="estilo_tabelas.css"></style>
+	<link rel="stylesheet" type="text/css" href="estilo_tabelas.css">
 	<script>
 		$(document).ready(function(){
 			var data = {'function' : 'select'};
@@ -17,14 +17,14 @@
 				success : function(result){
 						var json_resposta = JSON.parse(result);
 						for(var i = 0; i<json_resposta.length; i++){
-							$('#tabela tbody').append(
+						$('#tabela tbody').append(
 							"<tr>" + 
 							"<td>"+json_resposta[i].cep_inicial+"</td>" + 
 							"<td>"+json_resposta[i].cep_final+"</td>" + 
 							"<td>"+json_resposta[i].peso_minimo+"</td>" +
 							"<td>"+json_resposta[i].peso_maximo+"</td>" +
 							"<td>"+json_resposta[i].preco+"</td>" +
-							"<td>"+json_resposta[i].id_transportadora+"</td>" +
+							"<td>"+json_resposta[i].nome_transportadora+"</td>" +
 							"</tr>"				
 						);
 					}
@@ -41,7 +41,7 @@
 		<th>Peso Mínimo</th>
 		<th>Peso Máximo</th>
 		<th>Preço</th>
-		<th>Id Transportadora</th>
+		<th>Nome Transportadora</th>
 	</tr>
 </table>
 </body>
