@@ -41,13 +41,15 @@
 				
 		});
 
-		window.onbeforeunload = function(){
+		function limparCampos(){
 			input_CEP_inicial.value = '';
 			input_CEP_final.value = '';
 			input_peso_min.value = '';
 			input_peso_max.value = '';
 			input_preco.value = '';
 		}
+
+		window.onbeforeunload = limparCampos;
 
 		//essa funcao esta aqui para garantir o bom funcionamento dos inputs numericos, visto que 
 		//o comportamento desses elementos varia de browser para browser. No chrome as teclas alfabeticas
@@ -130,12 +132,34 @@
 	input_peso_min = document.getElementById('input_pmin');
 	input_peso_max = document.getElementById('input_pmax');
 	input_preco = document.getElementById('input_preco');
+	input_id_transportadora = document.getElementById('combo_transportadoras');
 	formulario = document.getElementById('formulario');
 	bt_cadastrar = document.getElementById('bt_cadastrar');
 
 	bt_cadastrar.addEventListener('click',function(){
 		if(validarCampos()){
-			formulario.submit();
+			var url = 'index_faixa_entrega.php';
+			var data = {
+				'function' : 'insert',
+				'cep_inicial' : input_CEP_inicial.value,
+				'cep_final' : input_CEP_final.value,
+				'peso_minimo' : input_peso_min.value,
+				'peso_maximo' : input_peso_max.value,
+				'preco' : input_preco.value,
+				'id_transportadora' : input_id_transportadora.value
+			};
+			$.ajax({
+				type : "POST",
+				url : url,
+				data : data,
+				success : function(result){
+					alert(result);
+					limparCampos();
+				},
+				error : function(xhr,error){
+					alert(error);
+				}
+			});
 		}		
 	});
 

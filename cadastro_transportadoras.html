@@ -10,14 +10,14 @@
 		var bt_cadastrar;
 		var formulario;
 
-		function limpaCampos(){
+		function limparCampos(){
 			input_nome.value = '';
 			input_situacao[0].checked = false;
 			input_situacao[1].checked = false;
 		}
 
 		//limpa campos qdo pagina eh atualizada
-		window.onbeforeunload = limpaCampos;
+		window.onbeforeunload = limparCampos;
 	</script>
 </head>
 <body>
@@ -61,7 +61,7 @@
 				data : data,
 				success : function(result){
 					alert(result);
-					limpaCampos();
+					limparCampos();
 				},
 				error : function(xhr,error){
 					alert(error);
