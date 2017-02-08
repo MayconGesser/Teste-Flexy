@@ -15,7 +15,7 @@ class ControladorDAOTransportadora{
 		$this->conexao->close();
 	}
 
-	public function insert_transportadora($valores){
+	public function insert($valores){
 		$insert = $this->conexao->prepare($this->sql_insert);
 		if(!$insert){
 			die("Preparação insert falhou: (" . $this->conexao->errno . ") " . $this->conexao->error);
@@ -33,7 +33,7 @@ class ControladorDAOTransportadora{
 			}
 	}
 
-	public function update_transportadora($id,$atributos,$valores_novos){
+	public function update($id,$atributos,$valores_novos){
 		$sql_update = 'UPDATE transportadora SET ';
 		$i = 0; 
 		foreach($atributos as $nome_atributo){
@@ -48,6 +48,16 @@ class ControladorDAOTransportadora{
 		}
 		else{
 			echo 'Alteração realizada com sucesso.';
+		}
+	}
+
+	public function delete($id){
+		$sql_delete = 'DELETE FROM transportadora WHERE id_transportadora = ' . $id;
+		if(!$this->conexao->query($sql_delete)){
+			echo 'Erro ao remover registro: ' . $this->conexao->error;
+		}
+		else{
+			echo 'Transportadora removida com sucesso';
 		}
 	}
 

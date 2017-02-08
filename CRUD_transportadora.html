@@ -5,15 +5,17 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="estilo_tabelas.css">
 	<script>
+
 		$(document).ready(function(){
 			var data = {'function' : 'select'};
 			var url = 'index_transportadora.php';
-			console.log('fazendo ajax');
 			$.ajax({				
 				type : "GET",
 				url : url,
 				data : data,
 				success : function(result){
+						//metodo para construir tabela dinamicamente copiado desse link
+						//http://www.codemag.com/Article/1511031
 						var json_resposta = JSON.parse(result);
 						for(var i = 0; i<json_resposta.length; i++){
 							var query_string = '?id_transportadora='+json_resposta[i].id_transportadora +
@@ -23,8 +25,7 @@
 							"<td>"+json_resposta[i].id_transportadora+"</td>" + 
 							"<td>"+json_resposta[i].nome+"</td>" + 
 							"<td>"+(json_resposta[i].ativa ? "Ativa" : "Inativa")+"</td>" +
-							"<td><span><a href=\"editar_transportadora.html"+query_string+"\">Editar</a></span></td>" + 
-							"<td><span><href>Excluir</a></span></td>" + 
+							"<td><a href=\"editar_transportadora.html"+query_string+"\">Editar</a></td>" + 
 							"</tr>"				
 						);
 					}
@@ -42,7 +43,6 @@
 		<th>Nome</th>
 		<th>Situação</th>
 		<th></th>	
-		<th></th>
 	</tr>
 </table>
 </body>
