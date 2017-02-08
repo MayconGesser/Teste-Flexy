@@ -1,3 +1,7 @@
+CREATE DATABASE teste_flexy;
+
+USE teste_flexy;
+
 DROP TABLE IF EXISTS transportadora;
 CREATE TABLE transportadora(
 	id_transportadora MEDIUMINT AUTO_INCREMENT NOT NULL,
