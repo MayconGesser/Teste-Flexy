@@ -38,7 +38,8 @@ class ControladorDAOTransportadora{
 		$i = 0; 
 		foreach($atributos as $nome_atributo){
 			//recupera o nome dos atributos
-			$sql_update .= $nome_atributo . ' = ' . "'" . $valores_novos[$nome_atributo] . "'" . ($i !== count($valores_novos)-1 ? ', ' : '');
+			$tipo_atributo = gettype($valores_novos[$nome_atributo]);
+			$sql_update .= $nome_atributo . ' = ' . ($tipo_atributo === 'string' ? "'" : '') . $valores_novos[$nome_atributo] . ($tipo_atributo === 'string' ? "'" : '') . ($i !== count($valores_novos)-1 ? ', ' : '');
 			$i++;
 		}		
 		$sql_update .= ' WHERE id_transportadora = ' . $id;

@@ -41,9 +41,11 @@
 			input_situacao[situacao].checked = true;
 			input_situacao['ativa'].addEventListener('click',function(){
 				flag_ativa_alterado = true;
+				input_situacao['checked'] = input_situacao['ativa'];
 			});
 			input_situacao['inativa'].addEventListener('click',function(){
 				flag_ativa_alterado = true;
+				input_situacao['checked'] = input_situacao['inativa'];
 			});
 			id_transportadora = getParameterByName('id_transportadora');
 		});
@@ -75,10 +77,10 @@
 					'id_transportadora' : id_transportadora
 				};
 				if(flag_nome_alterado){
-					data.nome = input_nome.value;
+					data['nome'] = input_nome.value;
 				}
 				if(flag_ativa_alterado){
-					data.ativa = input_situacao.value;
+					data['ativa'] = input_situacao['checked'].value;
 				}
 				var url = 'index_transportadora.php';
 				$.ajax({
