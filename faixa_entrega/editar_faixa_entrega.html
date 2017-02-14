@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Editar Faixa de Entrega</title>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="../util/getparameterbyname.js"></script>
+        <script>
+            var input_CEP_inicial;
+            var input_CEP_final;
+            var input_peso_min;
+            var input_peso_max;
+            var input_preco;
+            var formulario;
+            var bt_cadastrar;
+
+            $(document).ready(function () {
+
+                input_CEP_inicial = document.getElementById('input_cinicial');
+                input_CEP_final = document.getElementById('input_cfinal');
+                input_peso_min = document.getElementById('input_pmin');
+                input_peso_max = document.getElementById('input_pmax');
+                input_preco = document.getElementById('input_preco');
+                input_id_transportadora = document.getElementById('combo_transportadoras');
+                formulario = document.getElementById('formulario');
+                bt_cadastrar = document.getElementById('bt_cadastrar');
+                
+                var data = {'function': 'select'};
+                var url = '../transportadora/index_transportadora.php';
+                console.log('fazendo ajax');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: data,
+                    success: function (result) {
+                        var json_retorno = JSON.parse(result);
+                        var id_transportadora = getParameterByName('id_transportadora');
+                        id_transportadora = parseInt(id_transportadora);
+                        for (var i = 0; i < json_retorno.length; i++) {
+                            var opcao = document.createElement('option');
+                            var string = json_retorno[i].id_transportadora + ' - ' + json_retorno[i].nome;
+                            opcao.value = json_retorno[i].id_transportadora;
+                            opcao.innerHTML = string;
+                            if(json_retorno[i].id_transportadora === id_transportadora){
+                                opcao.setAttribute('selected','true');
+                            }
+                            combo_transportadoras.appendChild(opcao);
+                        }
+                    },
+                    error: function (xhr, error) {
+                        console.log('falhou: ' + error);
+                    }
+                });
+
+
+                var CEP_inicial = getParameterByName('cep_inicial');
+                var CEP_final = getParameterByName('cep_final');
+                var peso_min = getParameterByName('peso_minimo');
+                var peso_max = getParameterByName('peso_maximo');
+                var preco = getParameterByName('preco');
+
+                input_CEP_inicial.value = CEP_inicial;
+                input_CEP_final.value = CEP_final;
+                input_peso_min.value = peso_min;
+                input_peso_max.value = peso_max;
+                input_preco.value = preco;
+
+
+                bt_cadastrar.addEventListener('click', function () {
+                    if (validarCampos()) {
+                        var url = 'index_faixa_entrega.php';
+                        var data = {
+                            'function': 'insert',
+                            'cep_inicial': input_CEP_inicial.value,
+                            'cep_final': input_CEP_final.value,
+                            'peso_minimo': input_peso_min.value,
+                            'peso_maximo': input_peso_max.value,
+                            'preco': input_preco.value,
+                            'id_transportadora': input_id_transportadora.value
+                        };
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: data,
+                            success: function (result) {
+                                alert(result);
+                                limparCampos();
+                            },
+                            error: function (xhr, error) {
+                                alert(error);
+                            }
+                        });
+                    }
+                });
+
+                input_CEP_inicial.addEventListener('keydown', permitirApenasNumeros);
+                input_CEP_final.addEventListener('keydown', permitirApenasNumeros);
+                input_peso_min.addEventListener('keydown', permitirApenasNumeros);
+                input_peso_max.addEventListener('keydown', permitirApenasNumeros);
+                input_preco.addEventListener('keydown', permitirApenasNumeros);
+            });
+
+            function limparCampos() {
+                input_CEP_inicial.value = '';
+                input_CEP_final.value = '';
+                input_peso_min.value = '';
+                input_peso_max.value = '';
+                input_preco.value = '';
+            }
+
+            window.onbeforeunload = limparCampos;
+
+            //essa funcao esta aqui para garantir o bom funcionamento dos inputs numericos, visto que 
+            //o comportamento desses elementos varia de browser para browser. No chrome as teclas alfabeticas
+            //sao bloqueadas por default, ja no firefox nao
+            function permitirApenasNumeros(evt) {
+                var charCode = (evt.which) ? evt.which : event.keyCode;
+                console.log(charCode);
+                if (charCode != 46 && charCode > 31
+                        && (charCode < 48 || charCode > 57))
+                    evt.preventDefault();
+            }
+
+            function validarCEP(cep) {
+                return cep.length === 8;
+            }
+
+            function validarCampoNumerico(valor) {
+                return valor > 0;
+            }
+
+            function validarCampos() {
+                if (input_CEP_final.value === '' ||
+                        input_CEP_inicial.value === '' ||
+                        input_peso_min.value === '' ||
+                        input_peso_max.value === '' ||
+                        input_preco.value === '') {
+                    alert("Preencha os campos obrigatórios!");
+                    return false;
+                } else if (!validarCEP(input_CEP_inicial.value)) {
+                    alert("Campo CEP inicial incorreto. Certifique-se que o CEP contém 8 algarismos numéricos.");
+                    return false;
+                } else if (!validarCEP(input_CEP_final.value)) {
+                    alert("Campo CEP final incorreto. Certifique-se que o CEP contém 8 algarismos numéricos.");
+                    return false;
+                } else if (!validarCampoNumerico(input_peso_min.value)) {
+                    alert("Campo peso mínimo incorreto. Apenas valores maiores que 0.");
+                    return false;
+                } else if (!validarCampoNumerico(input_peso_max.value)) {
+                    alert("Campo peso máximo incorreto. Apenas valores maiores que 0.");
+                    return false;
+                } else if (!validarCampoNumerico(input_preco.value)) {
+                    alert("Campo preço incorreto. Apenas valores maiores que 0.");
+                    return false;
+                }
+                return true;
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Editar Faixa de Entrega</h1>
+        <br><br>
+        <div id="div_form">
+            <form method="post" action="insert_faixa_entrega.php" id="formulario">
+                <fieldset>
+                    Transportadora: <select id="combo_transportadoras" name="id_transportadora">
+                    </select>
+                    <br><br>
+                    CEP Inicial: <input type="text" name="CEP_inicial" id="input_cinicial" placeholder="CEP inicial" required>
+                    <br><br>
+                    CEP Final: <input type="text" name="CEP_final" id="input_cfinal" placeholder="CEP final" required>
+                    <br><br>
+                    Peso Mínimo: <input type="number" step="0.1" name="peso_min" id="input_pmin" required>
+                    <br><br>
+                    Peso Máximo: <input type="number" step="0.1" name="peso_max" id="input_pmax" required>
+                    <br><br>
+                    Preço: <input type="number" step="0.01" name="preco" id="input_preco" required>
+                </fieldset>
+            </form>
+        </div>
+        <br><br>
+        <button type="button" id="bt_cadastrar">Alterar</button>
+        <script type="text/javascript"></script>
+    </body>
+</html>
