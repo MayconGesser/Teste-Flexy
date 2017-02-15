@@ -56,17 +56,24 @@
 <body>
     <h1>Listagem de faixas de entrega</h1>
     <br><br>
-<table id="tabela">
-	<tr id="cabecalho">
-		<th>CEP Inicial</th>
-		<th>CEP Final</th>	
-		<th>Peso Mínimo</th>
-		<th>Peso Máximo</th>
-		<th>Preço</th>
-		<th>Nome Transportadora</th>
-                <th>Id Transportadora</th>
-                <th></th>
-	</tr>
-</table>
+    <table id="tabela">
+            <tr id="cabecalho">
+                    <th>CEP Inicial</th>
+                    <th>CEP Final</th>	
+                    <th>Peso Mínimo</th>
+                    <th>Peso Máximo</th>
+                    <th>Preço</th>
+                    <th>Nome Transportadora</th>
+                    <th>Id Transportadora</th>
+                    <th></th>
+            </tr>
+    </table>
+    <br><br>
+    <button type='button' id='bt_voltar'>Voltar</button>
+    <script>
+        document.getElementById('bt_voltar').addEventListener('click',function(){
+            window.location.href = '/Teste-Flexy/index.php';
+        });
+    </script>
 </body>
 </html>

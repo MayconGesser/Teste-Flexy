@@ -6,7 +6,9 @@ $controlador = new ControladorDAOTransportadora;
 
 if(isset($_GET['function'])){
 	if($_GET['function'] === 'select'){
-		$controlador->listar_todas();
+            if(isset($_GET['cadastro_faixa_entrega'])){
+                $controlador->listar_todas($_GET['cadastro_faixa_entrega']);
+            }		
 	}
 }
 

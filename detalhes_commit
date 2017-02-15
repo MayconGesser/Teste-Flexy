@@ -1,3 +1,4 @@
+
 Criada tela principal do sistema (index.php)
 Construção de query strings separada e delegada a um módulo javascript externo
 Casos de conjunto vazio ou erro tratados nas telas de listagem 
@@ -5,3 +6,8 @@ Listagem de faixas de entrega traz id da transportadora
 Função e tela de edição de faixas de entrega
 Função getParameterByName separada e delegada a um módulo javascript externo
 Estrutura do projeto melhor organizada em pastas; rotas ajustadas de acordo com novas URL's.
+
+Função construirJSON, utilizada por controladores, separada e delegada a um
+módulo php externo.
+Implementada distinção entre transportadoras ativas e inativas no cadastro de uma nova faixa de entrega.
+

@@ -1,5 +1,6 @@
 <?php
 include("../util/conexao.php");
+require '../util/construirJSON.php';
 
 class ControladorDAOFaixaEntrega{
 	private $sql_insert = "INSERT INTO faixa_entrega(cep_inicial,cep_final,peso_minimo,peso_maximo,preco,id_transportadora) VALUES (?,?,?,?,?,?)";
@@ -7,6 +8,11 @@ class ControladorDAOFaixaEntrega{
 	private $sql_select = "SELECT f.*,t.id_transportadora, t.nome AS nome_transportadora FROM faixa_entrega AS f
 						   INNER JOIN transportadora AS t ON f.id_transportadora = t.id_transportadora
 						   ORDER BY f.id_faixa_entrega, t.nome";
+        private $atributos = [
+                'cep_inicial','cep_final','peso_minimo','peso_maximo', 'preco', 'nome_transportadora',
+                'id_transportadora'
+            ];
+        
 	private $conexao; 
 
 	public function __construct(){
@@ -52,17 +58,9 @@ class ControladorDAOFaixaEntrega{
 				$retorno = '[';
 				$i = 1;
 				while($registro = $resultado->fetch_assoc()){
-					$json = '{' .  '"cep_inicial" : ' . $registro['cep_inicial'] . ',' .
-					'"cep_final" : ' . '"' . $registro['cep_final'] . '"' . ',' . 
-					'"peso_minimo" : ' . $registro['peso_minimo'] . ',' . 
-					'"peso_maximo" : ' . $registro['peso_maximo'] . ',' .
-					'"preco" : ' . $registro['preco'] . ',' . 
-					'"nome_transportadora" : ' . '"' . $registro['nome_transportadora'] . '"' . ',' .
-                                        '"id_transportadora" : ' .  $registro['id_transportadora'] .
-					'}' . 
-					($i !== $resultado->num_rows ? ',' : '');	//testa se eh a ultima posicao para por a virgula, para fins de boa construcao do JSON
-					$retorno .= $json;
-					$i = $i + 1;
+					$json = construirJSON($this->atributos, $registro);					
+					$retorno .= $json . ($i !== $resultado->num_rows ? ',' : '');	//testa se eh a ultima posicao para por a virgula, para fins de boa construcao do JSON;
+					$i++;
 				}
 				$retorno .= ']';
 				echo $retorno;

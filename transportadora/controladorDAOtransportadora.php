@@ -1,9 +1,12 @@
 <?php
 include("../util/conexao.php");
+require '../util/construirJSON.php';
 
 class ControladorDAOTransportadora{
 	private $sql_insert = 'INSERT INTO transportadora(nome,ativa) VALUES (?,?)';
 	private $sql_select = 'SELECT * FROM transportadora ORDER BY id_transportadora';
+        private $sql_select_fe = 'SELECT * FROM transportadora WHERE ativa = 1 ORDER BY id_transportadora';
+        private $atributos = ['id_transportadora','nome','ativa'];
 	private $conexao;
 
 	public function __construct(){
@@ -12,7 +15,11 @@ class ControladorDAOTransportadora{
 	}
 
 	public function __destruct(){
-		$this->conexao->close();
+                try{
+                    $this->conexao->close();
+                } catch (Exception $ex) {
+                    echo $ex->getMessage();
+                }		
 	}
 
 	public function insert($valores){
@@ -60,20 +67,24 @@ class ControladorDAOTransportadora{
 			echo 'Transportadora removida com sucesso';
 		}
 	}
-
-	public function listar_todas(){
-		$resultado = $this->conexao->query($this->sql_select);
+        
+        //o argumento cadastro_faixa_entrega eh usado para determinar se o metodo estah 
+        //sendo invocado para realizar a listagem de transportadoras com o fim de 
+        //cadastrar uma faixa de entrega; sendo assim, eh desnecessario,
+        //e ateh errado, listar transportadoras inativas
+	public function listar_todas($cadastro_faixa_entrega){
+                $sql_usado = $cadastro_faixa_entrega === 'true'
+                        ? $this->sql_select_fe : $this->sql_select;
+                $resultado = $this->conexao->query($sql_usado);
 		if($resultado){
 			if($resultado->num_rows > 0){
 				//monta JSON de retorno
 				$retorno = '[';
 				$i = 1;
 				while($registro = $resultado->fetch_assoc()){
-					$json = '{' .  '"id_transportadora" : ' . $registro['id_transportadora'] . ',' . '"nome" : ' . '"' . $registro['nome'] . '"' . 
-					',' . '"ativa" : ' . $registro['ativa'] . '}' . 
-					($i !== $resultado->num_rows ? ',' : '');	//testa se eh a ultima posicao para por a virgula, para fins de boa construcao do JSON
-					$retorno .= $json;
-					$i = $i + 1;
+					$json = construirJSON($this->atributos,$registro);					
+					$retorno .= $json . ($i !== $resultado->num_rows ? ',' : '');	//testa se eh a ultima posicao para por a virgula, para fins de boa construcao do JSON;
+					$i++;
 				}
 				$retorno .= ']';
 				echo $retorno;
@@ -85,6 +96,7 @@ class ControladorDAOTransportadora{
 			echo "Query falhou";
 		}
 	}
+        
 }
 
 ?>

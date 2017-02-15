@@ -25,7 +25,10 @@
                 formulario = document.getElementById('formulario');
                 bt_cadastrar = document.getElementById('bt_cadastrar');
                 
-                var data = {'function': 'select'};
+                var data = {
+                    'function': 'select',
+                    'cadastro_faixa_entrega' : false
+                };
                 var url = '../transportadora/index_transportadora.php';
                 console.log('fazendo ajax');
                 $.ajax({
@@ -33,15 +36,19 @@
                     url: url,
                     data: data,
                     success: function (result) {
+                        console.log(result);
                         var json_retorno = JSON.parse(result);
-                        var id_transportadora = getParameterByName('id_transportadora');
-                        id_transportadora = parseInt(id_transportadora);
+                        var id_transportadora = parseInt(getParameterByName('id_transportadora'));
                         for (var i = 0; i < json_retorno.length; i++) {
                             var opcao = document.createElement('option');
-                            var string = json_retorno[i].id_transportadora + ' - ' + json_retorno[i].nome;
-                            opcao.value = json_retorno[i].id_transportadora;
+                            var id = parseInt(json_retorno[i].id_transportadora);
+                            var string = id + ' - ' + json_retorno[i].nome;
+                            opcao.value = id;
                             opcao.innerHTML = string;
-                            if(json_retorno[i].id_transportadora === id_transportadora){
+                            console.log('id:' + id);
+                            console.log('id_transportadora:' + id_transportadora);
+                            console.log(id === id_transportadora);
+                            if(id === id_transportadora){
                                 opcao.setAttribute('selected','true');
                             }
                             combo_transportadoras.appendChild(opcao);

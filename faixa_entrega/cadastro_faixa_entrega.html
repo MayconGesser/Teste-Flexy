@@ -14,7 +14,10 @@
 		var bt_cadastrar;
 
 		$(document).ready(function(){
-			var data = {'function' : 'select'};
+			var data = {
+                            'function' : 'select',
+                            'cadastro_faixa_entrega' : true
+                        };
 			var url = '../transportadora/index_transportadora.php';
 			$.ajax({				
 				type : "GET",
