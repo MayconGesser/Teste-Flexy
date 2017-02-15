@@ -8,6 +8,9 @@ function constroiQueryString(json){
     //a partir da primeira chave novamente; se se usasse a abordagem numerica, definindo
     //um indice numerico, se perderia a referencia as chaves do json. Isso explica o ternario
     //e a variavel q ele usa
+    
+    //metodo de iteração e checagem de chaves copiado desse link:
+    //http://stackoverflow.com/questions/684672/how-do-i-loop-through-or-enumerate-a-javascript-object
     for(var chave in json){
         if(json.hasOwnProperty(chave)){
             retorno += (naoEhPrimeiroAtributo ? '&' : '') + chave + '=' + json[chave];
